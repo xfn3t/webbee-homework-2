@@ -1,0 +1,100 @@
+databaseChangeLog:
+    - changeSet:
+          id: insert-reference-data
+          author: dev
+          changes:
+              # Валюты
+              - loadData:
+                    tableName: currency
+                    file: data/currency.csv
+                    relativeToChangelogFile: true
+                    separator: ";"
+                    commentLineStartsWith: "#"
+                    quotchar: '"'
+                    header: true
+                    usePreparedStatement: false
+                    encoding: "UTF-8"
+                    columns:
+                        - column:
+                              header: id
+                              name: id
+                              type: STRING
+                        - column:
+                              header: name
+                              name: name
+                              type: STRING
+              - sql:
+                    sql: UPDATE currency SET is_active = true;
+
+              # Статусы сделок
+              - loadData:
+                    tableName: deal_status
+                    file: data/deal_status.csv
+                    relativeToChangelogFile: true
+                    separator: ";"
+                    commentLineStartsWith: "#"
+                    quotchar: '"'
+                    header: true
+                    usePreparedStatement: false
+                    encoding: "UTF-8"
+                    columns:
+                        - column:
+                              header: id
+                              name: id
+                              type: STRING
+                        - column:
+                              header: name
+                              name: name
+                              type: STRING
+              - sql:
+                    sql: UPDATE deal_status SET is_active = true;
+
+              # Типы сделок
+              - loadData:
+                    tableName: deal_type
+                    file: data/deal_type.csv
+                    relativeToChangelogFile: true
+                    separator: ";"
+                    commentLineStartsWith: "#"
+                    quotchar: '"'
+                    header: true
+                    usePreparedStatement: false
+                    encoding: "UTF-8"
+                    columns:
+                        - column:
+                              header: id
+                              name: id
+                              type: STRING
+                        - column:
+                              header: name
+                              name: name
+                              type: STRING
+              - sql:
+                    sql: UPDATE deal_type SET is_active = true;
+
+              # Роли контрагентов
+              - loadData:
+                    tableName: contractor_role
+                    file: data/contractor_role.csv
+                    relativeToChangelogFile: true
+                    separator: ";"
+                    commentLineStartsWith: "#"
+                    quotchar: '"'
+                    header: true
+                    usePreparedStatement: false
+                    encoding: "UTF-8"
+                    columns:
+                        - column:
+                              header: id
+                              name: id
+                              type: STRING
+                        - column:
+                              header: name
+                              name: name
+                              type: STRING
+                        - column:
+                              header: category
+                              name: category
+                              type: STRING
+              - sql:
+                    sql: UPDATE contractor_role SET is_active = true;
