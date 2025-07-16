@@ -1,0 +1,145 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tables
+      author: dev
+      changes:
+        - createTable:
+            tableName: country
+            columns:
+              - column:
+                  name: id
+                  type: TEXT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: industry
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: org_form
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: contractor
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(12)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: parent_id
+                  type: VARCHAR(12)
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name_full
+                  type: TEXT
+              - column:
+                  name: inn
+                  type: TEXT
+              - column:
+                  name: ogrn
+                  type: TEXT
+              - column:
+                  name: country
+                  type: TEXT
+              - column:
+                  name: industry
+                  type: INTEGER
+              - column:
+                  name: org_form
+                  type: INTEGER
+              - column:
+                  name: create_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "CURRENT_TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modify_date
+                  type: TIMESTAMP
+              - column:
+                  name: create_user_id
+                  type: TEXT
+              - column:
+                  name: modify_user_id
+                  type: TEXT
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
+
+        - addForeignKeyConstraint:
+            baseTableName: contractor
+            baseColumnNames: country
+            constraintName: fk_contractor_country
+            referencedTableName: country
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: contractor
+            baseColumnNames: industry
+            constraintName: fk_contractor_industry
+            referencedTableName: industry
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: contractor
+            baseColumnNames: org_form
+            constraintName: fk_contractor_org_form
+            referencedTableName: org_form
+            referencedColumnNames: id
