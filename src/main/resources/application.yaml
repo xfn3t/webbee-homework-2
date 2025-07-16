@@ -1,0 +1,26 @@
+spring:
+
+  application:
+    name: contractor-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/contractor_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jdbc:
+    template:
+      query-timeout: 5
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.yaml
+    user: postgres
+    password: postgres
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:log4j2.xml
