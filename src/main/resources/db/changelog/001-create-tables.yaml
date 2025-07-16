@@ -1,0 +1,299 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001
+      author: dev
+      changes:
+        - createTable:
+            tableName: deal
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_deal
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: agreement_number
+                  type: TEXT
+              - column:
+                  name: agreement_date
+                  type: DATE
+              - column:
+                  name: agreement_start_dt
+                  type: TIMESTAMP
+              - column:
+                  name: availability_date
+                  type: DATE
+              - column:
+                  name: type_id
+                  type: VARCHAR(30)
+              - column:
+                  name: status_id
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: close_dt
+                  type: TIMESTAMP
+              - column:
+                  name: create_date
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modify_date
+                  type: TIMESTAMP
+              - column:
+                  name: create_user_id
+                  type: TEXT
+              - column:
+                  name: modify_user_id
+                  type: TEXT
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: currency
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(3)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_currency
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: deal_status
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(30)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_deal_status
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: deal_type
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(30)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_deal_type
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: deal_contractor
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_deal_contractor
+              - column:
+                  name: deal_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contractor_id
+                  type: VARCHAR(12)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: inn
+                  type: TEXT
+              - column:
+                  name: main
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+              - column:
+                  name: create_date
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modify_date
+                  type: TIMESTAMP
+              - column:
+                  name: create_user_id
+                  type: TEXT
+              - column:
+                  name: modify_user_id
+                  type: TEXT
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: contractor_role
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(30)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_contractor_role
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: deal_sum
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_deal_sum
+                  autoIncrement: true
+              - column:
+                  name: deal_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sum
+                  type: NUMERIC(100,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_id
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_main
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+
+        - createTable:
+            tableName: contractor_to_role
+            columns:
+              - column:
+                  name: contractor_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+            constraints:
+              primaryKey:
+                columnNames: contractor_id, role_id
+                constraintName: pk_contractor_to_role
+
+        # Foreign keys
+        - addForeignKeyConstraint:
+            baseTableName: deal_sum
+            baseColumnNames: deal_id
+            referencedTableName: deal
+            referencedColumnNames: id
+            constraintName: fk_deal_sum_deal
+
+        - addForeignKeyConstraint:
+            baseTableName: deal_sum
+            baseColumnNames: currency_id
+            referencedTableName: currency
+            referencedColumnNames: id
+            constraintName: fk_deal_sum_currency
+
+        - addForeignKeyConstraint:
+            baseTableName: deal
+            baseColumnNames: status_id
+            referencedTableName: deal_status
+            referencedColumnNames: id
+            constraintName: fk_deal_status
+
+        - addForeignKeyConstraint:
+            baseTableName: deal
+            baseColumnNames: type_id
+            referencedTableName: deal_type
+            referencedColumnNames: id
+            constraintName: fk_deal_type
+
+        - addForeignKeyConstraint:
+            baseTableName: deal_contractor
+            baseColumnNames: deal_id
+            referencedTableName: deal
+            referencedColumnNames: id
+            constraintName: fk_deal_contractor_deal
+
+        - addForeignKeyConstraint:
+            baseTableName: contractor_to_role
+            baseColumnNames: contractor_id
+            referencedTableName: deal_contractor
+            referencedColumnNames: id
+            constraintName: fk_contractor_to_role_contractor
+
+        - addForeignKeyConstraint:
+            baseTableName: contractor_to_role
+            baseColumnNames: role_id
+            referencedTableName: contractor_role
+            referencedColumnNames: id
+            constraintName: fk_contractor_to_role_role
